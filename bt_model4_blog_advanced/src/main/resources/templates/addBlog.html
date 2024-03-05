@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Form</title>
+</head>
+<style>
+    body {
+        font-family: "Arial", sans-serif; /* Đổi font chữ tại đây */
+        margin: 0;
+        padding: 0;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+    }
+
+    .container {
+        margin: 20px 15%;
+        width: 80%;
+    }
+
+    .blog-form {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+
+    textarea,
+    input,
+    button {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+    label{
+        font-weight: 100;
+    }
+</style>
+<body>
+
+<div class="container">
+    <h2 style="text-align: center">Blog</h2>
+    <form id="blog-form" th:action="@{/blog/addAndUpdate}" th:object="${Blog}" method="post" class="blog-form">
+        <label for="title">Tiêu đề:</label><br>
+        <input type="text" th:field="*{title}" id="title" name="title"><br>
+
+        <label for="content">Nội dung:</label><br>
+        <textarea id="content" th:field="*{content}" name="content"></textarea><br>
+
+        <label for="author">Tác giả:</label><br>
+        <input type="text" th:field="*{author}" id="author" name="author"><br>
+
+        <label for="createdDateTime">Thời gian tạo:</label><br>
+        <input type="datetime-local" th:field="*{createdDateTime}" id="createdDateTime" name="createdDateTime" readonly ><br><br>
+        <select  th:field="*{category}">
+            <option th:each="category : ${listCategory}" th:text="${category.nameCategory}" th:value="${category.idCategory}"></option>
+        </select>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var createdDateTimeInput = document.getElementById("createdDateTime");
+        var currentDate = new Date();
+        var currentDateString = currentDate.toISOString().slice(0, 16); // Lấy chuỗi ngày tháng theo định dạng yyyy-mm-ddThh:mm
+        createdDateTimeInput.value = currentDateString;
+    });
+
+</script>
+</body>
+</html>

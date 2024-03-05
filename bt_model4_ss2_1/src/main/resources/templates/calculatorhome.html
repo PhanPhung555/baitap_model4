@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<span th:text="${message}"></span>
+<form action="/all/math" method="get">
+    <h1>Calculator</h1>
+    <table>
+        <tr>
+            <td><input type="text" name="value1"></td>
+            <td><input type="text" name="value2"></td>
+        </tr>
+        <tr>
+            <td><input type="submit" name="operation" value="Addition(+)"></td>
+            <td><input type="submit" name="operation" value="Subtraction(-)"></td>
+            <td><input type="submit" name="operation" value="Multiplication(X)"></td>
+            <td><input type="submit" name="operation" value="Division(/)"></td>
+        </tr>
+        <h1>ResultDevision:${result}</h1>
+    </table>
+</form>
+</body>
+</html>

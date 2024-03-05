@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2><small>Oder</small></h2>
+<form th:action="@{/home/updateStaff}" th:object="${staffDTO}" method="post">
+
+    <input type="number" hidden th:field="*{id}">
+
+    <label>Name Staff : </label>
+    <input type="text" th:field="*{name}">
+    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span><br>
+
+    <label>NumberPhone Staff : </label>
+    <input type="number" th:field="*{numberPhone}">
+    <span th:if="${#fields.hasErrors('numberPhone')}" th:errors="*{numberPhone}"></span><br>
+
+    <label>Salary Staff : </label>
+    <input type="text" th:field="*{salary}"><br>
+
+    <label>Age Staff : </label>
+    <input type="text" th:field="*{age}"><br>
+
+    <label>Email Staff : </label>
+    <input type="email" th:field="*{email}"><br>
+
+    <label>Name Job : </label>
+    <select th:field="*{job}">
+        <option th:each="jobstaff : ${listJob}" th:value="${jobstaff.id}" th:text="${jobstaff.nameJob}"></option>
+    </select>
+    <button type="submit">Update</button>
+</form>
+</body>
+</html>

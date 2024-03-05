@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form th:action="@{/home/borrowBook}" method="post" th:object="${UserDTO}" id="form-action">
+    <div>
+        <label for="name">Tên người mượn:</label><br>
+        <input type="text" id="name"  th:field="*{name}"  required><br>
+        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+    </div>
+    <div>
+        <label for="borrowDate">Ngày mượn:</label><br>
+        <input type="date" id="borrowDate"  th:field="*{borrowed_day}" required><br>
+        <span th:if="${#fields.hasErrors('borrowed_day')}" th:errors="*{borrowed_day}"></span>
+    </div>
+    <div>
+        <label for="returnDate">Ngày trả:</label><br>
+        <input type="date" id="returnDate"  th:field="*{pay_day}"  required><br>
+        <span th:if="${#fields.hasErrors('pay_day')}" th:errors="*{pay_day}"></span>
+    </div>
+    <div>
+        <label >Tên sách:</label><br>
+        <select th:field="*{book}">
+            <option th:value="${bookid}" th:text="${bookname}" ></option>
+        </select>
+    </div>
+    <div>
+        <label for="quantity">Số lượng:</label><br>
+        <input type="number" id="quantity" th:field="*{quantityBook}" min="1" th:max="${bookNumber}" required ><br>
+    </div>
+    <div>
+        <button type="submit">Gửi</button>
+    </div>
+</form>
+</body>
+<script>
+
+</script>
+</html>

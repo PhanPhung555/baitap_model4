@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form th:action="@{/home/addBook}" method="post" th:object="${BookDTO}" id="form-action">
+    <div>
+        <label for="nameBook">Tên Sách:</label><br>
+        <input type="text" id="nameBook"  th:field="*{nameBook}"  required><br>
+        <span th:if="${#fields.hasErrors('nameBook')}" th:errors="*{nameBook}"></span>
+    </div>
+    <div>
+        <label for="numberBook">Số Lượng:</label><br>
+        <input type="number" id="numberBook"  th:field="*{numberBook}"  required><br>
+        <span th:if="${#fields.hasErrors('numberBook')}" th:errors="*{numberBook}"></span>
+    </div>
+    <div>
+        <label for="author">Tác Gỉa:</label><br>
+        <input type="text" id="author"  th:field="*{author}" required><br>
+        <span th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></span>
+    </div>
+    <div>
+        <label for="introduce">Gioi thiệu:</label><br>
+        <input type="text" id="introduce"  th:field="*{introduce}"  required><br>
+        <span th:if="${#fields.hasErrors('introduce')}" th:errors="*{introduce}"></span>
+    </div>
+    <div>
+        <button type="submit">Gửi</button>
+    </div>
+</form>
+</body>
+<script>
+
+</script>
+</html>

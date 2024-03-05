@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+    <th:block var="s" items="strings">
+        <tr>${s}</tr>
+    </th:block>
+</table>
+
+<form th:action="@{/all/listAll}" method="post">
+    <label><input type="checkbox" name="spice" value="mayo"> Mayo</label>
+    <label><input type="checkbox" name="spice" value="mustard"> Mustard</label>
+    <label><input type="checkbox" name="spice" value="ketchup"> Ketchup</label>
+    <label><input type="checkbox" name="spice" value="lettuce"> Lettuce</label>
+    <label><input type="checkbox" name="spice" value="tomato"> Tomato</label>
+    <input type="submit" value="send">
+</form>
+<table>
+
+</table>
+</body>
+</html>

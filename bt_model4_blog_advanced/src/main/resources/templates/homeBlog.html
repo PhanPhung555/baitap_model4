@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/fontawesome.min.css" integrity="sha384-BY+fdrpOd3gfeRvTSMT+VUZmA728cfF9Z2G42xpaRkUGu2i3DyzpTURDo5A6CaLK" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+</head>
+<style>
+    .container{
+        width: 100%;
+        margin: 20px 20px;
+        display: flex;
+        gap: 10px;
+    }
+    .search-three{
+        background: white;
+        padding: 15px;
+        border-radius: 3px;
+        border: 1px solid #ddd;
+    }
+    .search-three input,select{
+        padding: 5px;
+        margin: 0 15px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+    .blog-post {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 20px;
+        max-width: 300px;
+        position: relative;
+        margin: 20px 10px 20px 20px;
+    }
+
+    .blog-title {
+        color: #333;
+        font-size: 24px;
+        margin-top: 0;
+    }
+
+    .blog-author, .blog-date {
+        color: #666;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+
+    .blog-content {
+        color: #555;
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    .btn-read-more {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+
+    .btn-read-more:hover {
+        background-color: #0056b3;
+    }
+    .blog-setting{
+        /*position: absolute;*/
+        /*width: 30px;*/
+        /*height: 30px;*/
+        /*right: -5px;*/
+        /*top: -10px;*/
+        /*border-radius: 50%;*/
+        /*background: white;*/
+        /*border: 1px solid #ddd;*/
+
+    }
+
+    .blog-setting a{
+        text-align: center;
+        text-decoration: none;
+        padding: 5px 0 5px 8px;
+    }
+    .blog-setting-container {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        right: -5px;
+        top: -10px;
+        border-radius: 50%;
+        background: white;
+        border: 1px solid #ddd;
+        z-index: 10000;
+    }
+
+    .update-delete-options {
+        width: 100px;
+        right: -300%;
+        position: absolute;
+        margin-top: -10px;
+        display: none;
+    }
+
+    .blog-setting-container:hover .update-delete-options   {
+        display: block;
+    }
+
+    .blog-setting-container .update-delete-options:hover .update-option{
+        border: 1px solid #eaad11;
+        cursor: pointer;
+    }
+    .blog-setting-container .update-delete-options:hover .delete-option{
+        border: 1px solid #e81811;
+        cursor: pointer;
+    }
+    .update-option, .delete-option{
+        background-color: white;
+        border-radius: 4px;
+        padding: 0 ;
+        text-align: center;
+        margin: -5px 0 10px 20px;
+        display: block;
+        width: 100%;
+        border: 1px solid #b6aaaa;
+        z-index: 1;
+        color: black;
+    }
+
+</style>
+<body>
+
+
+<h2 style="text-align: center"><strong>Các Bài Blog - <a th:href="@{/blog/nextPageBlogAdd}">Tạo Blog</a></strong></h2>
+
+<form th:action="@{/blog/searchBlog}" th:object="${blog}" method="GET" style="display: flex;margin: 20px" class="search-three">
+    <input type="text" id="searchTerm" th:name="nameBlog" placeholder="Tim Kiếm Theo Tên">
+
+    <select id="sortBy" name="sortBy" th:name="dateBlog">
+        <option value="createdAt" th:value="1">Mới Nhất</option>
+        <option value="createdAt" th:value="2">Gần Đây</option>
+    </select>
+
+    <select id="nameCategory" th:name="contentBlog" >
+        <option th:each="s : ${listCategory}" th:text="${s.nameCategory}" th:value="${s.idCategory}">Hài</option>
+    </select>
+    <input type="submit" class="btn btn-primary" value="Search">
+</form>
+
+<div class="container">
+    <div class="blog-post" th:each="blog : ${listBlog}">
+        <div class="blog-setting ">
+            <button href="" id="blog-setting-container" class="blog-setting-container" >
+                C
+                <div class="update-delete-options" >
+                    <a th:href="@{/blog/{idBlog}/nextPageBlogUpdate(idBlog=${blog.idBlog})}" class="update-option">Update</a>
+                    <a type="button" th:onclick="|removeBlog(${blog.idBlog})|" class=" delete-option" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Remove
+                    </a>
+                </div>
+            </button>
+
+        </div>
+        <h2 class="blog-title">Tiêu đề blog <span th:text="${blog.title}"></span></h2>
+        <p class="blog-author">Tác giả: <span th:text="${blog.author}"></span></p>
+        <p class="blog-date">Ngày tạo: <span th:text=" ${blog.createdDateTime}"></span></p>
+        <div class="blog-content"> Nội Dung :<span th:text="${blog.content}"></span></div>
+        <div class="blog-content"> Thể loại :<span th:text="${blog.Category.nameCategory}"></span></div>
+        <p>
+            <!-- Dùng một lớp mới để chứa nội dung có thể được ẩn/hiển thị -->
+            <a class="btn btn-primary" style="color: black;text-decoration: none;margin: 15px 0";>Xem chi tiết</a>
+        </p>
+    </div>
+</div>
+
+    <div class="text-center" th:unless="${listBlog.isEmpty()}">
+        <a th:href="@{/blog/list(page=${listBlog.number - 1})}" th:if="${listBlog.hasPrevious()}">Prev</a>
+        <a th:text="${listBlog.number + 1}"></a> / <a th:text="${listBlog.totalPages}"></a>
+        <a th:href="@{/blog/list(page=${listBlog.number + 1})}" th:if="${listBlog.hasNext()}">Next</a>
+    </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form th:action="@{/blog/remove}" method="get">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="idBlogHidden" hidden th:name="idBlogHidden">
+                    <div class="span">Ban Muốn Xóa Blog này ?</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+<script>
+    function removeBlog(idBlog){
+        console.log(idBlog)
+        document.getElementById("idBlogHidden").value = idBlog;
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+

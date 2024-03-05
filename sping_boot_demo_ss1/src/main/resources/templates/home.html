@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+          crossorigin="anonymous">
+</head>
+<body>
+
+<form th:action="@{/home/searchStaff}" th:object="${staff}" method="get">
+    <input type="text" th:name="nameStaff">
+    <button type="submit">Search</button>
+</form>
+<h2>Thông Tin <small>Staff</small></h2>
+<table class="table  table-borderless container">
+    <thead>
+    <tr class="table-header">
+        <th scope="col">#</th>
+        <th scope="col">Name Staff</th>
+        <th scope="col">Image Staff</th>
+        <th scope="col">NumberPhone</th>
+        <th scope="col">Salary Staff</th>
+        <th scope="col">Job Staff</th>
+        <a th:href="@{/home/nextPageCreate}">Oder</a>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="staff : ${listStaff}">
+        <td th:text="${staff.id}"></td>
+        <img th:src="@{'/img/' + ${staff.PathImage}}" height="100px" width="100px"/>
+        <td th:text="${staff.name}"></td>
+        <td th:text="${staff.numberPhone}"></td>
+        <td th:text="${staff.salary}"></td>
+        <td th:text="${staff.age}"></td>
+        <td th:text="${staff.email}"></td>
+        <td th:text="${staff.Job.nameJob}"></td>
+        <td>
+            <a th:href="@{/home/{id}/removeStaff(id=${staff.id})}">Remove</a>
+            <a th:href="@{/home/{id}/nextPageUpdate(id=${staff.id})}">Update</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+<!--    <div class="text-center" th:unless="${listStaff.isEmpty()}">-->
+<!--        <a th:href="@{/home/list(page=${listStaff.number - 1})}" th:if="${listStaff.hasPrevious()}">Prev</a>-->
+<!--        <a th:text="${listStaff.number + 1}"></a> / <a th:text="${listStaff.totalPages}"></a>-->
+<!--        <a th:href="@{/home/list(page=${listStaff.number + 1})}" th:if="${listStaff.hasNext()}">Next</a>-->
+<!--    </div>-->
+
+<p>Phân Trang Tìm Kiếm</p>
+<div class="text-center" th:unless="${listStaff.isEmpty()}">
+    <a th:href="@{/home/searchStaff(nameStaff=${namestaffSearch},page=${listStaff.number - 1})}"
+       th:if="${listStaff.hasPrevious()}">Prev</a>
+    <a th:text="${listStaff.number + 1}"></a> / <a th:text="${listStaff.totalPages}"></a>
+    <a th:href="@{/home/searchStaff(nameStaff=${namestaffSearch},page=${listStaff.number + 1})}"
+       th:if="${listStaff.hasNext()}">Next</a>
+</div>
+</body>
+</html>
