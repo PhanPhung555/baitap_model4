@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý tài khoản</title>
+    <!-- Link Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+</head>
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+    }
+    .action-btn {
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+    .table-border{
+        border-bottom: 1px solid #6666;
+    }
+    .btn-action {
+        border: 1px solid #6666;
+    }
+    .btn-action:hover{
+        border: 1px solid #6666;
+    }
+    .box{
+        display: block;
+        max-width: 300px;
+        position: absolute;
+        right: 195px;
+    }
+    .box form{
+        display: flex;
+        border-radius: 5px;
+    }
+    .box form input{
+        padding: 0;
+    }
+    .menu{
+        position: relative;
+    }
+    .box form button {
+        padding: 0 15px;
+    }
+    .btn-form .btn-input{
+        padding: 5px 5px 5px 10px ;
+        outline: none;
+        border: 1px solid #999999;
+        border-right: none;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+    }
+    .btn-form .btn-button{
+        background: white;
+        width: 40px;
+        height: 35px;
+        padding: 5px ;
+        right: 10px;
+        border-left: none;
+        border-bottom-right-radius: 45%;
+        border-top-right-radius: 45%;
+        border-top: 1px solid #999999;
+        border-right: 1px solid #999999;
+        border-bottom: 1px solid #999999;
+    }
+    .btn-form .btn-button:hover .btn-icon{
+        color: green;
+    }
+    .page-btn a {
+        padding: 5px 12px;
+        background: white;
+    }
+    .page-btn a:hover{
+        cursor: pointer;
+        background: #cccccc;
+    }
+    .search-three{
+        background: white;
+        padding: 15px;
+        border-radius: 3px;
+        border: 1px solid #ddd;
+    }
+    .search-three input,select{
+        padding: 5px;
+        margin: 0 15px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+    .blog-post {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 20px;
+        max-width: 300px;
+        position: relative;
+        margin: 20px 10px 20px 20px;
+    }
+
+    .blog-title {
+        color: #333;
+        font-size: 24px;
+        margin-top: 0;
+    }
+
+    .blog-author, .blog-date {
+        color: #666;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+
+    .blog-content {
+        color: #555;
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    .btn-read-more {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+
+    .btn-read-more:hover {
+        background-color: #0056b3;
+    }
+    .blog-setting{
+        /*position: absolute;*/
+        /*width: 30px;*/
+        /*height: 30px;*/
+        /*right: -5px;*/
+        /*top: -10px;*/
+        /*border-radius: 50%;*/
+        /*background: white;*/
+        /*border: 1px solid #ddd;*/
+
+    }
+
+    .blog-setting a{
+        text-align: center;
+        text-decoration: none;
+        padding: 5px 0 5px 8px;
+    }
+    .blog-setting-container {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        right: -5px;
+        top: -10px;
+        border-radius: 50%;
+        background: white;
+        border: 1px solid #ddd;
+        z-index: 10000;
+    }
+
+    .update-delete-options {
+        width: 100px;
+        right: -300%;
+        position: absolute;
+        margin-top: -10px;
+        display: none;
+    }
+
+    .blog-setting-container:hover .update-delete-options   {
+        display: block;
+    }
+
+    .blog-setting-container .update-delete-options:hover .update-option{
+        border: 1px solid #eaad11;
+        cursor: pointer;
+    }
+    .blog-setting-container .update-delete-options:hover .delete-option{
+        border: 1px solid #e81811;
+        cursor: pointer;
+    }
+    .update-option, .delete-option{
+        background-color: white;
+        border-radius: 4px;
+        padding: 0 ;
+        text-align: center;
+        margin: -5px 0 10px 20px;
+        display: block;
+        width: 100%;
+        border: 1px solid #b6aaaa;
+        z-index: 1;
+        color: black;
+    }
+</style>
+<body>
+<!--      MENU - HEADING -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container menu">
+        <a class="navbar-brand" th:href="@{/product/list}">Logo</a>
+    </div>
+</nav>
+
+<!-- Form tìm kiếm -->
+<form th:action="@{/product/searchProduct}" method="GET" style="display: flex;margin: 20px" class="search-three">
+    <label>Tên Sản Phẩm</label>
+    <input type="text" id="searchTerm" th:name="nameProduct" placeholder="Tim Kiếm Theo Tên" required>
+
+    <label>Giá Sản Phẩm</label>
+    <input type="number" id="" th:name="priceProduct" placeholder="Tim Kiếm Giá" required>
+
+    <label>Loaị Sản Phẩm</label>
+    <select id="nameCategory" th:name="idProductType" >
+        <option th:each="s : ${listProductType}" th:text="${s.nameProductType}" th:value="${s.idProductType}"></option>
+    </select>
+    <input type="reset" class="btn btn-primary" value="Xóa">
+
+    <input type="submit" class="btn btn-primary" value="Search">
+</form>
+
+<!--      TABLE - CONTENT  -->
+<div class="container ">
+    <h2 class="mt-5">Danh sách tài khoản</h2>
+
+    <table class="table mt-3 table-border">
+        <thead>
+        <tr>
+            <th scope="col">STT</th>
+            <th scope="col">Chọn</th>
+            <th scope="col">Tên Sản Phẩm</th>
+            <th scope="col">Giá Sản Phẩm</th>
+            <th scope="col">Loại Sản Phẩm</th>
+            <th scope="col">Tình Trạng</th>
+            <th scope="col"><a class="btn btn-primary action-btn" th:href="@{/product/nextPageAdd}" >Thêm Mới</a>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${listProduct}">
+            <td th:text="${product.idProduct}"></td>
+            <td>
+                <input type="checkbox" th:value="${product.idProduct}">
+            </td>
+            <td th:text="${product.nameProduct}"></td>
+            <td th:text="${product.priceProduct}"></td>
+            <td th:text="${product.ProductType.nameProductType}"></td>
+            <td th:text="${product.statusProduct}"></td>
+            <td>
+                <a class="btn btn-action action-btn"
+                   data-bs-toggle="modal" data-bs-target="#exampleModal"
+                   th:data-id="${product.idProduct}" th:data-name="${product.nameProduct}" onclick="submitForm(this)"
+                >Xóa</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="text-center page-btn" >
+            <div class="text-center" th:unless="${listProduct.isEmpty()}">
+                <a th:href="@{/product/list(page=${listProduct.number - 1})}" th:if="${listProduct.hasPrevious()}">Prev</a>
+                <a th:text="${listProduct.number + 1}"></a> / <a th:text="${listProduct.totalPages}"></a>
+                <a th:href="@{/product/list(page=${listProduct.number + 1})}" th:if="${listProduct.hasNext()}">Next</a>
+            </div>
+    </div>
+</div>
+
+<!--   Modal  -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form th:action="@{/product/deleteProduct}" method="get">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Xóa San Phẩm</h5>
+                </div>
+                <div class="modal-body">
+                    <input type="text" hidden th:id="idProductHidden" name="idProductHidden">
+                    <p id="idnameProduc"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function submitForm(temp) {
+        document.getElementById("idProductHidden").value = temp.getAttribute('data-id'); // Lấy giá trị của thuộc tính data-id
+        document.getElementById("idnameProduc").innerText = temp.getAttribute('data-name'); // Lấy giá trị của thuộc tính data-name
+    }
+</script>
+
+<!-- Link Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
